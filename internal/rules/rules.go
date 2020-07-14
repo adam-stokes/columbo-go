@@ -24,7 +24,6 @@ type Rule struct {
 }
 
 func (c *Rule) ProcessFiles(destination string) error {
-	lineMatch := regexp.MustCompile(c.LineMatch)
 
 	err := filepath.Walk(destination, func(path string, info os.FileInfo, err error) error {
 		log.Println("-> processing ", path)
@@ -41,7 +40,8 @@ func (c *Rule) ProcessFiles(destination string) error {
 			scanner.Split(bufio.ScanLines)
 
 			for scanner.Scan() {
-				if lineMatch.FindStringIndex(scanner.Text()) == nil {
+				found, _ := regexp.MatchString(c.LineMatch, scanner.Text())
+				if found {
 					log.Println("LINE MATCH :: ", scanner.Text())
 				}
 			}
