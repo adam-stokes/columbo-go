@@ -54,6 +54,7 @@ func main() {
 			output := rulesSpec.Parse(rules)
 			for _, r := range output.Rules {
 				log.Println("Processing: ", r.Id)
+				r.ProcessFiles(outDir)
 			}
 			return nil
 		},

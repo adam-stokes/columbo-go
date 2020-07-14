@@ -2,6 +2,9 @@ rules:
   - id: subprocess matcher
     description: matches a subprocess exception
     line_match: "exit status"
+  - id: errors
+    description: errors
+    line_match: "Errors:"
   - id: python-tb-exception
     description: python tracebacks
     start_marker: "^Traceback.*"

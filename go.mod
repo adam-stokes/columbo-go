@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/dsnet/compress v0.0.1 // indirect
 	github.com/frankban/quicktest v1.10.0 // indirect
+	github.com/gabriel-vasile/mimetype v1.1.1
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/mholt/archiver v3.1.1+incompatible
 	github.com/nwaples/rardecode v1.1.0 // indirect
