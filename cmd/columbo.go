@@ -3,8 +3,9 @@ package main
 import (
 	"log"
 	"os"
-
+	"fmt"
 	"github.com/urfave/cli/v2"
+	"github.com/battlemidget/columbo-go/internal/rules"
 )
 
 func main() {
@@ -17,6 +18,13 @@ func main() {
 				Aliases: []string{"r"},
 				Usage:   "Load rules spec from `YAML` file",
 			},
+		},
+		Action: func(c *cli.Context) error {
+			var rulesSpec rules.RulesSpec
+			rules := c.String("rules")
+			output := rulesSpec.Parse(rules)
+			fmt.Printf(output.Rules[0].Id)
+			return nil
 		},
 	}
 
