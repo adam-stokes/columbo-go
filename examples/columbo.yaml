@@ -1,0 +1,8 @@
+rules:
+  - id: subprocess matcher
+    description: matches a subprocess exception
+    line_match: "exit status"
+  - id: python-tb-exception
+    description: python tracebacks
+    start_marker: "^Traceback.*"
+    end_marker: "^Exception|Error|InvalidRequest|CalledProcessError|AssertionError:"

@@ -13,11 +13,11 @@ type RulesSpec struct {
 }
 
 type Rule struct {
-	Id            string   `yaml:"id"`
-	Description      string   `yaml:"description"`
-	LineMatch        string   `yaml:"line_match,omitempty"`
-	StartMarket      string `yaml:"start_marker,omitempty"`
-	EndMarket     string   `yaml:"end_market,omitempty"`
+	Id          string `yaml:"id"`
+	Description string `yaml:"description"`
+	LineMatch   string `yaml:"line_match,omitempty"`
+	StartMarker string `yaml:"start_marker,omitempty"`
+	EndMarker   string `yaml:"end_marker,omitempty"`
 }
 
 func (c *RulesSpec) Parse(specFile string) *RulesSpec {
