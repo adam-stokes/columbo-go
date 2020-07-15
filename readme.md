@@ -12,8 +12,8 @@ columbo - got them clues
 
 Pretty straightforward, it parses a yaml specification of regexs and tries to
 find errors/concerns within output files. It'll take any tarball with plain text
-files and parse each file concurrently for matches. All individual results are
-stored in both json and text files for both machines and humans.
+files and parse each file concurrently for matches. Results are stored as JSON
+in the output directory.
 
 ## Rules Spec
 
