@@ -69,7 +69,7 @@ func (c *Rule) ProcessLineMatch(destination string) error {
 	return err
 }
 
-// Processes a start and end market match printing the result if found
+// Processes a start and end marker match printing the result if found
 func (c *Rule) ProcessStartEndMarker(destination string) error {
 
 	var isMatching bool
