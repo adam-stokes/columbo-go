@@ -36,6 +36,13 @@ You can also match by line:
   line_match: "exit status 1"
 ```
 
+## Building Locally
+
+Developed with Go version 1.14
+
+```
+> go build ./cmd/columbo.go
+```
 
 ## AsciiCast
 
