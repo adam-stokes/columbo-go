@@ -10,6 +10,8 @@ builds:
   - arm64
   - ppc64le
   - s390x
+  main: ./cmd/columbo.go
+  binary: columbo
 archives:
 - replacements:
     amd64: x86_64
