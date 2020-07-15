@@ -56,6 +56,11 @@ func main() {
 					log.Println("Processing: ", r.Id)
 					r.ProcessLineMatch(outDir)
 				}
+
+				if r.StartMarker != "" && r.EndMarker != "" {
+					log.Println("Processing: ", r.Id)
+					r.ProcessStartEndMarker(outDir)
+				}
 			}
 			return nil
 		},

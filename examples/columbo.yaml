@@ -7,5 +7,5 @@ rules:
     line_match: "error"
   - id: python-tb-exception
     description: python tracebacks
-    start_marker: "^Traceback.*"
-    end_marker: "^Exception|Error|InvalidRequest|CalledProcessError|AssertionError:"
+    start_marker: "- Traceback"
+    end_marker: "- RuntimeError: Event loop is closed"
