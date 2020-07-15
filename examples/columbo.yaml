@@ -4,7 +4,7 @@ rules:
     line_match: "exit status"
   - id: errors
     description: errors
-    line_match: "Errors:"
+    line_match: "error"
   - id: python-tb-exception
     description: python tracebacks
     start_marker: "^Traceback.*"

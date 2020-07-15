@@ -1,13 +1,14 @@
 package rules
 
 import (
+	"bufio"
+	"encoding/json"
+	"github.com/gabriel-vasile/mimetype"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
-	"bufio"
 	"path/filepath"
-	"github.com/gabriel-vasile/mimetype"
 	"regexp"
 )
 
@@ -23,13 +24,18 @@ type Rule struct {
 	EndMarker   string `yaml:"end_marker,omitempty"`
 }
 
-func (c *Rule) ProcessFiles(destination string) error {
+type LineMatch struct {
+	SourceFile, Match string
+}
+
+// Processes a single line match printing the result if found
+func (c *Rule) ProcessLineMatch(destination string) error {
+
+	var results []LineMatch
 
 	err := filepath.Walk(destination, func(path string, info os.FileInfo, err error) error {
-		log.Println("-> processing ", path)
 		mime, err := mimetype.DetectFile(path)
 		if mime.Is("text/plain") {
-
 			file, err := os.Open(path)
 			if err != nil {
 				log.Fatal("x unable to open ", path, " :: ", err)
@@ -42,7 +48,12 @@ func (c *Rule) ProcessFiles(destination string) error {
 			for scanner.Scan() {
 				found, _ := regexp.MatchString(c.LineMatch, scanner.Text())
 				if found {
-					log.Println("LINE MATCH :: ", scanner.Text())
+					results = append(results,
+						LineMatch{
+							SourceFile: path,
+							Match:      scanner.Text(),
+						})
+					log.Println(path, " :: ", scanner.Text())
 				}
 			}
 
@@ -50,6 +61,9 @@ func (c *Rule) ProcessFiles(destination string) error {
 
 		return nil
 	})
+
+	file, _ := json.MarshalIndent(results, "", "")
+	_ = ioutil.WriteFile(filepath.Join(destination, "line-match-results.json"), file, 0644)
 
 	return err
 }

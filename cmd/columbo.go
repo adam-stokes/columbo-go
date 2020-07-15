@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/battlemidget/columbo-go/internal/rules"
 	"github.com/battlemidget/columbo-go/internal/tarextract"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
-	"log"
 	"os"
 	"path/filepath"
 )
@@ -24,7 +24,6 @@ func main() {
 				Aliases: []string{"o"},
 				Usage:   "Output `DIR` to store extracted files",
 			},
-
 		},
 		Action: func(c *cli.Context) error {
 			var rulesSpec rules.RulesSpec
@@ -53,8 +52,10 @@ func main() {
 			rules := c.String("rules")
 			output := rulesSpec.Parse(rules)
 			for _, r := range output.Rules {
-				log.Println("Processing: ", r.Id)
-				r.ProcessFiles(outDir)
+				if r.LineMatch != "" {
+					log.Println("Processing: ", r.Id)
+					r.ProcessLineMatch(outDir)
+				}
 			}
 			return nil
 		},
