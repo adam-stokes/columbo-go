@@ -49,8 +49,8 @@ func main() {
 					continue
 				}
 			}
-			rules := c.String("rules")
-			output := rulesSpec.Parse(rules)
+			parseRules := c.String("rules")
+			output := rulesSpec.Parse(parseRules)
 			for _, r := range output.Rules {
 				if r.LineMatch != "" {
 					log.Println("Processing: ", r.Id)
@@ -62,6 +62,7 @@ func main() {
 					r.ProcessStartEndMarker(outDir)
 				}
 			}
+			rules.SaveResults()
 			return nil
 		},
 	}

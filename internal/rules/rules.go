@@ -26,14 +26,21 @@ type Rule struct {
 }
 
 type MatchResult struct {
-	SourceFile, Match string
+	Filename string `json:"filename"`
+	Results  string `json:"results"`
+	Rule     string `json:"rule"`
+	Name     string `json:"name"`
+}
+
+var results []MatchResult
+
+func SaveResults() {
+	file, _ := json.MarshalIndent(results, "", "")
+	_ = ioutil.WriteFile("columbo-results.json", file, 0644)
 }
 
 // Processes a single line match printing the result if found
 func (c *Rule) ProcessLineMatch(destination string) error {
-
-	var results []MatchResult
-
 	err := filepath.Walk(destination, func(path string, info os.FileInfo, err error) error {
 		mime, err := mimetype.DetectFile(path)
 		if mime.Is("text/plain") {
@@ -51,8 +58,10 @@ func (c *Rule) ProcessLineMatch(destination string) error {
 				if found {
 					results = append(results,
 						MatchResult{
-							SourceFile: path,
-							Match:      scanner.Text(),
+							Filename: path,
+							Results:      scanner.Text(),
+							Rule: c.Id,
+							Name: c.Id,
 						})
 					log.Println(path, " :: ", scanner.Text())
 				}
@@ -63,9 +72,6 @@ func (c *Rule) ProcessLineMatch(destination string) error {
 		return nil
 	})
 
-	file, _ := json.MarshalIndent(results, "", "")
-	_ = ioutil.WriteFile(filepath.Join(destination, "columbo-line-match-results.json"), file, 0644)
-
 	return err
 }
 
@@ -73,7 +79,6 @@ func (c *Rule) ProcessLineMatch(destination string) error {
 func (c *Rule) ProcessStartEndMarker(destination string) error {
 
 	var isMatching bool
-	var results []MatchResult
 	var matchedLines []string
 
 	err := filepath.Walk(destination, func(path string, info os.FileInfo, err error) error {
@@ -106,8 +111,10 @@ func (c *Rule) ProcessStartEndMarker(destination string) error {
 			}
 			if len(matchedLines) > 0 {
 				results = append(results, MatchResult{
-					SourceFile: path,
-					Match:      strings.Join(matchedLines, "\n"),
+					Filename: path,
+					Results:      strings.Join(matchedLines, "\n"),
+					Rule: c.Id,
+					Name: c.Id,
 				})
 				matchedLines = nil
 			}
@@ -116,9 +123,6 @@ func (c *Rule) ProcessStartEndMarker(destination string) error {
 
 		return nil
 	})
-
-	file, _ := json.MarshalIndent(results, "", "")
-	_ = ioutil.WriteFile(filepath.Join(destination, "columbo-start-end-marker-results.json"), file, 0644)
 
 	return err
 }
