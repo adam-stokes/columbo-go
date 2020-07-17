@@ -36,7 +36,7 @@ var results []MatchResult
 
 func SaveResults() {
 	file, _ := json.MarshalIndent(results, "", "")
-	_ = ioutil.WriteFile("columbo-results.json", file, 0644)
+	_ = ioutil.WriteFile("columbo-report.json", file, 0644)
 }
 
 // Processes a single line match printing the result if found
@@ -63,7 +63,6 @@ func (c *Rule) ProcessLineMatch(destination string) error {
 							Rule: c.Id,
 							Name: c.Id,
 						})
-					log.Println(path, " :: ", scanner.Text())
 				}
 			}
 
@@ -99,14 +98,11 @@ func (c *Rule) ProcessStartEndMarker(destination string) error {
 				if startFound {
 					isMatching = true
 					matchedLines = append(matchedLines, scanner.Text())
-					log.Println("START MARKER :: ", scanner.Text())
 				} else if endFound {
 					isMatching = false
 					matchedLines = append(matchedLines, scanner.Text())
-					log.Println("END MARKER :: ", scanner.Text())
 				} else if isMatching {
 					matchedLines = append(matchedLines, scanner.Text())
-					log.Println("IN BETWEEN :: ", scanner.Text())
 				}
 			}
 			if len(matchedLines) > 0 {
